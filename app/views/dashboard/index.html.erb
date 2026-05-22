@@ -13,7 +13,7 @@
       <p class="font-medium text-amber-900">Unlock AI summaries</p>
       <p class="text-sm text-amber-700">Upgrade to paid for full article summaries in your preferred language.</p>
     </div>
-    <%= link_to "Upgrade — $1/mo", upgrade_path, class: "bg-amber-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-amber-700 whitespace-nowrap" %>
+    <%= link_to "Upgrade — $5/year", upgrade_path, class: "bg-amber-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-amber-700 whitespace-nowrap" %>
   </div>
 <% end %>
 
@@ -58,7 +58,9 @@
   <% if @articles.empty? %>
     <div class="text-center py-16 text-gray-500">
       <p class="text-lg">No articles yet.</p>
-      <p class="text-sm mt-1">Run <code class="bg-gray-100 px-1 rounded">rake fetch</code> and <code class="bg-gray-100 px-1 rounded">rake ai_summarize</code> to populate.</p>
+      <% unless Rails.env.production? %>
+        <p class="text-sm mt-1">Run <code class="bg-gray-100 px-1 rounded">rake fetch</code> and <code class="bg-gray-100 px-1 rounded">rake ai_summarize</code> to populate.</p>
+      <% end %>
     </div>
   <% end %>
 </div>
