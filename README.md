@@ -7,7 +7,7 @@ An open source Ruby news digest platform. Aggregates RSS feeds from Ruby blogs a
 - Aggregates RSS/Atom feeds from an OPML file
 - AI-powered relevance filtering and summarization (English + Turkish) via Claude
 - Email digests (daily or weekly) via Resend
-- Free tier (titles + links) and paid tier ($1/month, includes AI summaries)
+- Free tier (titles + links) and paid tier ($5/year, includes AI summaries)
 - Self-hostable: bring your own `ANTHROPIC_API_KEY` to enable AI summaries for free
 
 ## Tech Stack

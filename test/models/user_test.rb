@@ -79,7 +79,7 @@ class UserTest < ActiveSupport::TestCase
   test "paid_active? returns true for paid user with future expiry" do
     user = valid_user
     user.save!
-    user.update!(plan: :paid, plan_expires_at: 1.month.from_now)
+    user.update!(plan: :paid, plan_expires_at: 1.year.from_now)
     assert user.paid_active?
   end
 

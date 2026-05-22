@@ -17,7 +17,7 @@ class WebhooksController < ApplicationController
       email = data.dig("data", "attributes", "user_email")
       user = User.find_by(email_address: email&.downcase)
       if user
-        user.update!(plan: :paid, plan_expires_at: 1.month.from_now)
+        user.update!(plan: :paid, plan_expires_at: 1.year.from_now)
       end
     end
 
