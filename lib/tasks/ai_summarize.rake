@@ -75,7 +75,7 @@ def call_claude(article, api_key)
   request.body = JSON.generate({
     model: "claude-haiku-4-5-20251001",
     max_tokens: 512,
-    messages: [{ role: "user", content: prompt }]
+    messages: [ { role: "user", content: prompt } ]
   })
 
   response = http.request(request)

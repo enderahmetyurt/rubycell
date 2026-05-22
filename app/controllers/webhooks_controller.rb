@@ -1,6 +1,6 @@
 class WebhooksController < ApplicationController
   allow_unauthenticated_access
-  skip_before_action :verify_authenticity_token
+  skip_forgery_protection
 
   def lemonsqueezy
     payload = request.body.read

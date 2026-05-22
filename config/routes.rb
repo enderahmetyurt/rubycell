@@ -1,15 +1,15 @@
 Rails.application.routes.draw do
-  resource :session, only: [:new, :create, :destroy]
-  resources :passwords, param: :token, only: [:new, :create, :edit, :update]
+  resource :session, only: [ :new, :create, :destroy ]
+  resources :passwords, param: :token, only: [ :new, :create, :edit, :update ]
 
   # Registration
-  resources :registrations, only: [:new, :create]
+  resources :registrations, only: [ :new, :create ]
   get "confirm/:token", to: "registrations#confirm", as: :confirm_registration
 
   # Main pages
   root "home#index"
   get "dashboard", to: "dashboard#index"
-  resource :settings, only: [:show, :update]
+  resource :settings, only: [ :show, :update ]
   get "upgrade", to: "upgrade#show"
 
   # Webhooks

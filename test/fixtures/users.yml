@@ -1,0 +1,25 @@
+alice:
+  email_address: alice@example.com
+  password_digest: <%= BCrypt::Password.create("password") %>
+  confirmed: true
+  language: 2
+  frequency: 0
+  plan: 0
+
+unconfirmed:
+  email_address: unconfirmed@example.com
+  password_digest: <%= BCrypt::Password.create("password") %>
+  confirmed: false
+  confirmation_token: validtoken12345678901234567890123456
+  language: 2
+  frequency: 2
+  plan: 0
+
+paid:
+  email_address: paid@example.com
+  password_digest: <%= BCrypt::Password.create("password") %>
+  confirmed: true
+  language: 2
+  frequency: 0
+  plan: 1
+  plan_expires_at: <%= 1.month.from_now %>

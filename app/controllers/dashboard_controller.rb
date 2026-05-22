@@ -11,9 +11,9 @@ class DashboardController < ApplicationController
     return scope if Current.user.lang_both?
 
     if Current.user.lang_tr?
-      scope.where.not(summary_tr: [nil, ""])
+      scope.where.not(summary_tr: [ nil, "" ])
     else
-      scope.where.not(summary_en: [nil, ""])
+      scope.where.not(summary_en: [ nil, "" ])
     end
   end
 end

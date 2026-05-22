@@ -11,7 +11,7 @@ namespace :articles do
 
     today_monday = Date.today.monday?
 
-    recipients = User.where(frequency: [:daily, :weekly]).where(confirmed: true)
+    recipients = User.where(frequency: [ :daily, :weekly ]).where(confirmed: true)
     puts "Found #{recipients.count} confirmed subscribers"
 
     recipients.each do |user|
@@ -43,7 +43,7 @@ def build_email(user, articles, frequency)
   date_str = Date.today.strftime("%B %d, %Y")
   subject = "RubyCell #{period} Digest — #{date_str}"
 
-  lines = ["<h2>RubyCell #{period} Digest &mdash; #{date_str}</h2>", "<ul style='padding:0;list-style:none'>"]
+  lines = [ "<h2>RubyCell #{period} Digest &mdash; #{date_str}</h2>", "<ul style='padding:0;list-style:none'>" ]
 
   articles.each do |article|
     lines << "<li style='margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #eee'>"
@@ -62,7 +62,7 @@ def build_email(user, articles, frequency)
   lines << "</ul>"
   lines << "<p style='color:#999;font-size:12px;margin-top:24px'>You're receiving this because you subscribed to RubyCell. <a href=''>Manage preferences</a>.</p>"
 
-  [subject, lines.join("\n")]
+  [ subject, lines.join("\n") ]
 end
 
 def send_via_resend(to, subject, html_body, api_key)
@@ -76,7 +76,7 @@ def send_via_resend(to, subject, html_body, api_key)
   request["Content-Type"] = "application/json"
   request.body = JSON.generate({
     from: ENV.fetch("MAIL_FROM", "RubyCell <noreply@rubycell.com>"),
-    to: [to],
+    to: [ to ],
     subject: subject,
     html: html_body
   })
