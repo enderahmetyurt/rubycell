@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ruby-50: #fff1f2;
+  --color-ruby-100: #ffe4e6;
+  --color-ruby-200: #fecdd3;
+  --color-ruby-300: #fda4af;
+  --color-ruby-400: #fb7185;
+  --color-ruby-500: #f43f5e;
+  --color-ruby-600: #b91c1c;
+  --color-ruby-700: #991b1b;
+  --color-ruby-800: #7f1d1d;
+  --color-ruby-900: #450a0a;
+}

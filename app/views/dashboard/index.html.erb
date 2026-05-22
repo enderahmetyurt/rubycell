@@ -1,0 +1,70 @@
+<% content_for :title, "Dashboard — RubyCell" %>
+
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-2xl font-bold text-gray-900">Latest Ruby news</h1>
+  <div class="text-sm text-gray-500">
+    <%= Current.user.language.upcase %> &middot; <%= Current.user.frequency.capitalize %>
+  </div>
+</div>
+
+<% unless Current.user.paid_active? %>
+  <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 flex items-center justify-between">
+    <div>
+      <p class="font-medium text-amber-900">Unlock AI summaries</p>
+      <p class="text-sm text-amber-700">Upgrade to paid for full article summaries in your preferred language.</p>
+    </div>
+    <%= link_to "Upgrade — $1/mo", upgrade_path, class: "bg-amber-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-amber-700 whitespace-nowrap" %>
+  </div>
+<% end %>
+
+<div class="space-y-4">
+  <% @articles.each do |article| %>
+    <div class="bg-white border border-gray-200 rounded-lg p-5 hover:border-gray-300 transition-colors">
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex-1 min-w-0">
+          <h2 class="font-semibold text-gray-900 mb-1">
+            <%= link_to article.title, article.url, target: "_blank", rel: "noopener noreferrer", class: "hover:text-ruby-600" %>
+          </h2>
+          <div class="text-xs text-gray-500 mb-2 flex items-center gap-2">
+            <% if article.source_url.present? %>
+              <%= link_to article.source, article.source_url, target: "_blank", class: "hover:underline" %>
+            <% else %>
+              <%= article.source %>
+            <% end %>
+            <span>&middot;</span>
+            <time><%= article.published_at&.strftime("%b %d, %Y") %></time>
+            <% if article.score.present? && article.score > 0 %>
+              <span class="bg-green-100 text-green-700 px-1.5 py-0.5 rounded text-xs font-medium">Score: <%= article.score %></span>
+            <% end %>
+          </div>
+
+          <% if Current.user.paid_active? %>
+            <% summary = Current.user.lang_tr? ? article.summary_tr : article.summary_en %>
+            <% summary ||= article.summary_en || article.summary_tr %>
+            <% if summary.present? %>
+              <p class="text-sm text-gray-600 leading-relaxed"><%= summary %></p>
+            <% end %>
+          <% end %>
+        </div>
+        <a href="<%= article.url %>" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600 flex-shrink-0 mt-0.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @articles.empty? %>
+    <div class="text-center py-16 text-gray-500">
+      <p class="text-lg">No articles yet.</p>
+      <p class="text-sm mt-1">Run <code class="bg-gray-100 px-1 rounded">rake fetch</code> and <code class="bg-gray-100 px-1 rounded">rake ai_summarize</code> to populate.</p>
+    </div>
+  <% end %>
+</div>
+
+<% if @pagy.pages > 1 %>
+  <div class="mt-8 flex justify-center gap-2 text-sm">
+    <%== pagy_nav(@pagy) %>
+  </div>
+<% end %>

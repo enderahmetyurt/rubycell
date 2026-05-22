@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+  <head>
+    <title>RubyCell Feeds</title>
+  </head>
+  <body>
+    <outline text="Ruby blogs" title="Ruby blogs">
+      <outline type="rss" text="Ruby Inside" title="Ruby Inside" xmlUrl="http://feeds.feedburner.com/RubyInside" htmlUrl="http://www.rubyinside.com"/>
+      <outline type="rss" text="Planet Ruby" title="Planet Ruby" xmlUrl="http://planetruby.github.io/calendar/feed.xml" htmlUrl="http://planetruby.github.io"/>
+      <outline type="rss" text="Ruby Weekly" title="Ruby Weekly" xmlUrl="https://rubyweekly.com/rss/1a6e1c0a" htmlUrl="https://rubyweekly.com"/>
+      <outline type="rss" text="The Ruby Rogues" title="The Ruby Rogues" xmlUrl="https://feeds.buzzsprout.com/1609.rss" htmlUrl="https://rubyrogues.com"/>
+      <outline type="rss" text="Thoughtbot Blog" title="Thoughtbot Blog" xmlUrl="https://feeds.feedburner.com/ThoughtBot" htmlUrl="https://thoughtbot.com/blog"/>
+      <outline type="rss" text="Zverok's blog" title="Zverok's blog" xmlUrl="https://zverok.space/feed.xml" htmlUrl="https://zverok.space"/>
+      <outline type="rss" text="Shopify Engineering" title="Shopify Engineering" xmlUrl="https://shopify.engineering/blogs/engineering.atom" htmlUrl="https://shopify.engineering"/>
+      <outline type="rss" text="Ruby on Rails Blog" title="Ruby on Rails Blog" xmlUrl="https://weblog.rubyonrails.org/feed/atom.xml" htmlUrl="https://rubyonrails.org/blog"/>
+    </outline>
+  </body>
+</opml>

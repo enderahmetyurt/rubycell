@@ -1,0 +1,39 @@
+name: Daily Digest
+
+on:
+  schedule:
+    - cron: "0 5 * * *"  # 05:00 UTC = 08:00 Turkey (UTC+3)
+  workflow_dispatch:
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+
+    env:
+      RAILS_ENV: production
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Run migrations
+        run: bundle exec rails db:migrate
+
+      - name: Fetch articles
+        run: bundle exec rake fetch
+
+      - name: AI summarize
+        run: bundle exec rake ai_summarize
+
+      - name: Send digest
+        run: bundle exec rake send_digest

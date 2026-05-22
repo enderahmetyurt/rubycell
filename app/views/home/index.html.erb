@@ -1,0 +1,71 @@
+<% content_for :title, "RubyCell — Ruby News Digest" %>
+
+<%# Hero %>
+<div class="text-center py-16">
+  <div class="text-5xl mb-4">💎</div>
+  <h1 class="text-4xl font-bold text-gray-900 mb-4">Stay current with Ruby</h1>
+  <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+    RubyCell aggregates the best Ruby and Rails content from across the web,
+    summarizes it with AI, and delivers a curated digest to your inbox.
+  </p>
+  <div class="flex gap-4 justify-center">
+    <%= link_to "Get started free", new_registration_path, class: "bg-ruby-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-ruby-700 transition-colors" %>
+    <%= link_to "View dashboard", dashboard_path, class: "bg-white text-gray-700 border border-gray-300 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition-colors" %>
+  </div>
+</div>
+
+<%# Features %>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 py-12 border-t border-gray-200">
+  <div class="text-center">
+    <div class="text-3xl mb-3">📡</div>
+    <h3 class="font-semibold text-gray-900 mb-2">Aggregated feeds</h3>
+    <p class="text-gray-600 text-sm">Pulls from dozens of Ruby blogs, release notes, and community sites automatically.</p>
+  </div>
+  <div class="text-center">
+    <div class="text-3xl mb-3">🤖</div>
+    <h3 class="font-semibold text-gray-900 mb-2">AI summaries</h3>
+    <p class="text-gray-600 text-sm">Each article is scored for relevance and summarized in English and Turkish by Claude AI.</p>
+  </div>
+  <div class="text-center">
+    <div class="text-3xl mb-3">📬</div>
+    <h3 class="font-semibold text-gray-900 mb-2">Email digest</h3>
+    <p class="text-gray-600 text-sm">Choose daily or weekly delivery. Pick your language preference. Unsubscribe anytime.</p>
+  </div>
+</div>
+
+<%# Pricing %>
+<div class="py-12 border-t border-gray-200">
+  <h2 class="text-2xl font-bold text-center text-gray-900 mb-8">Pricing</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+
+    <div class="bg-white border border-gray-200 rounded-xl p-6">
+      <h3 class="font-bold text-lg text-gray-900 mb-1">Free</h3>
+      <p class="text-3xl font-bold text-gray-900 mb-4">$0</p>
+      <ul class="space-y-2 text-sm text-gray-600 mb-6">
+        <li>✓ Browse all articles</li>
+        <li>✓ Article titles &amp; links</li>
+        <li>✓ Email digest (title + link only)</li>
+        <li>✓ Daily or weekly frequency</li>
+      </ul>
+      <%= link_to "Get started", new_registration_path, class: "block text-center border border-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50" %>
+    </div>
+
+    <div class="bg-ruby-50 border-2 border-ruby-600 rounded-xl p-6 relative">
+      <span class="absolute -top-3 left-1/2 -translate-x-1/2 bg-ruby-600 text-white text-xs font-medium px-3 py-1 rounded-full">Best value</span>
+      <h3 class="font-bold text-lg text-gray-900 mb-1">Paid</h3>
+      <p class="text-3xl font-bold text-gray-900 mb-4">$1<span class="text-base font-normal text-gray-500">/month</span></p>
+      <ul class="space-y-2 text-sm text-gray-600 mb-6">
+        <li>✓ Everything in Free</li>
+        <li>✓ AI-generated summaries</li>
+        <li>✓ Full digest with summaries</li>
+        <li>✓ Turkish &amp; English support</li>
+      </ul>
+      <%= link_to "Upgrade for $1/mo", upgrade_path, class: "block text-center bg-ruby-600 text-white px-4 py-2 rounded-md hover:bg-ruby-700" %>
+    </div>
+
+  </div>
+  <p class="text-center text-sm text-gray-500 mt-6">
+    Self-hosting? Set your own <code class="bg-gray-100 px-1 rounded">ANTHROPIC_API_KEY</code> to enable AI summaries for free.
+    <%= link_to "Read the docs →", "https://github.com/yourusername/rubycell/blob/main/HOSTING.md", class: "text-ruby-600 hover:underline" %>
+  </p>
+</div>

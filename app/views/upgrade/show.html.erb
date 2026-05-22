@@ -1,0 +1,27 @@
+<% content_for :title, "Upgrade — RubyCell" %>
+
+<div class="max-w-md mx-auto text-center py-12">
+  <div class="text-4xl mb-4">✨</div>
+  <h1 class="text-2xl font-bold text-gray-900 mb-2">Upgrade to Paid</h1>
+  <p class="text-gray-600 mb-8">Get AI-powered summaries, full digests, and support open source Ruby tooling.</p>
+
+  <div class="bg-white border-2 border-ruby-600 rounded-xl p-8 mb-6">
+    <div class="text-4xl font-bold text-gray-900 mb-1">$1<span class="text-lg font-normal text-gray-500">/month</span></div>
+    <ul class="text-sm text-gray-600 space-y-2 my-6 text-left">
+      <li>✓ AI summaries in English &amp; Turkish</li>
+      <li>✓ Full digest emails with summaries</li>
+      <li>✓ Relevance scoring</li>
+      <li>✓ Support indie open source</li>
+    </ul>
+    <% if @checkout_url.present? %>
+      <%= link_to "Subscribe for $1/month →", @checkout_url, class: "block w-full bg-ruby-600 text-white py-3 rounded-lg font-medium hover:bg-ruby-700 transition-colors", target: "_blank" %>
+    <% else %>
+      <p class="text-red-600 text-sm">Payment system not configured. Set <code>LEMONSQUEEZY_VARIANT_ID</code> env var.</p>
+    <% end %>
+  </div>
+
+  <p class="text-xs text-gray-500">
+    Payments processed securely by Lemon Squeezy. Cancel anytime.<br>
+    Self-hosting? AI summaries are free with your own <code class="bg-gray-100 px-1 rounded">ANTHROPIC_API_KEY</code>.
+  </p>
+</div>
