@@ -17,56 +17,92 @@
   </div>
 <% end %>
 
-<div class="space-y-4">
-  <% @articles.each do |article| %>
-    <div class="bg-white border border-gray-200 rounded-lg p-5 hover:border-gray-300 transition-colors">
-      <div class="flex items-start justify-between gap-4">
-        <div class="flex-1 min-w-0">
-          <h2 class="font-semibold text-gray-900 mb-1">
-            <%= link_to article.title, article.url, target: "_blank", rel: "noopener noreferrer", class: "hover:text-ruby-600" %>
-          </h2>
-          <div class="text-xs text-gray-500 mb-2 flex items-center gap-2">
-            <% if article.source_url.present? %>
-              <%= link_to article.source, article.source_url, target: "_blank", class: "hover:underline" %>
-            <% else %>
-              <%= article.source %>
-            <% end %>
-            <span>&middot;</span>
-            <time><%= article.published_at&.strftime("%b %d, %Y") %></time>
-            <% if article.score.present? && article.score > 0 %>
-              <span class="bg-green-100 text-green-700 px-1.5 py-0.5 rounded text-xs font-medium">Score: <%= article.score %></span>
+<% if @articles_by_week.empty? %>
+  <div class="text-center py-16 text-gray-500">
+    <p class="text-lg">No articles yet.</p>
+    <% unless Rails.env.production? %>
+      <p class="text-sm mt-1">Run <code class="bg-gray-100 px-1 rounded">rake fetch</code> and <code class="bg-gray-100 px-1 rounded">rake ai_summarize</code> to populate.</p>
+    <% end %>
+  </div>
+<% else %>
+  <div class="space-y-3">
+    <% current_week_start = Date.current.beginning_of_week %>
+    <% @articles_by_week.each do |week_start, week_articles| %>
+      <% week_end = week_start + 6.days %>
+      <% week_label = if week_start.month == week_end.month
+           "#{week_start.strftime('%-d')}–#{week_end.strftime('%-d %B %Y')}"
+         else
+           "#{week_start.strftime('%-d %b')} – #{week_end.strftime('%-d %B %Y')}"
+         end %>
+      <% articles_by_day = week_articles.group_by { |a| a.published_at.to_date } %>
+
+      <details class="group border border-gray-200 rounded-xl overflow-hidden" <%= 'open' if week_start == current_week_start %>>
+        <summary class="flex items-center justify-between px-5 py-3 bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors list-none">
+          <div class="flex items-center gap-3">
+            <svg class="w-4 h-4 text-gray-400 transition-transform group-open:rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+            <span class="font-semibold text-gray-800"><%= week_label %></span>
+            <% if week_start == current_week_start %>
+              <span class="text-xs bg-ruby-100 text-ruby-700 px-2 py-0.5 rounded-full font-medium">This week</span>
             <% end %>
           </div>
+          <span class="text-xs text-gray-400"><%= week_articles.size %> articles</span>
+        </summary>
 
-          <% if Current.user.paid_active? %>
-            <% summary = Current.user.lang_tr? ? article.summary_tr : article.summary_en %>
-            <% summary ||= article.summary_en || article.summary_tr %>
-            <% if summary.present? %>
-              <p class="text-sm text-gray-600 leading-relaxed"><%= summary %></p>
-            <% end %>
+        <div class="bg-white">
+          <% articles_by_day.each do |day, day_articles| %>
+            <div class="px-5 pt-4 pb-1">
+              <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">
+                <% if day == Date.current %>
+                  Today · <%= day.strftime("%-d %b") %>
+                <% elsif day == Date.current - 1 %>
+                  Yesterday · <%= day.strftime("%-d %b") %>
+                <% else %>
+                  <%= day.strftime("%A · %-d %b") %>
+                <% end %>
+              </p>
+              <div class="space-y-3 mb-4">
+                <% day_articles.each do |article| %>
+                  <div class="border border-gray-100 rounded-lg p-4 hover:border-gray-300 transition-colors">
+                    <div class="flex items-start justify-between gap-4">
+                      <div class="flex-1 min-w-0">
+                        <h2 class="font-semibold text-gray-900 mb-1">
+                          <%= link_to article.title, article.url, target: "_blank", rel: "noopener noreferrer", class: "hover:text-ruby-600" %>
+                        </h2>
+                        <div class="text-xs text-gray-500 mb-2 flex items-center gap-2">
+                          <% if article.source_url.present? %>
+                            <%= link_to article.source, article.source_url, target: "_blank", class: "hover:underline" %>
+                          <% else %>
+                            <%= article.source %>
+                          <% end %>
+                          <% if article.score.present? && article.score > 0 %>
+                            <span>&middot;</span>
+                            <span class="bg-green-100 text-green-700 px-1.5 py-0.5 rounded text-xs font-medium">Score: <%= article.score %></span>
+                          <% end %>
+                        </div>
+
+                        <% if Current.user.paid_active? %>
+                          <% summary = Current.user.lang_tr? ? article.summary_tr : article.summary_en %>
+                          <% summary ||= article.summary_en || article.summary_tr %>
+                          <% if summary.present? %>
+                            <p class="text-sm text-gray-600 leading-relaxed"><%= summary %></p>
+                          <% end %>
+                        <% end %>
+                      </div>
+                      <a href="<%= article.url %>" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600 flex-shrink-0 mt-0.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
           <% end %>
         </div>
-        <a href="<%= article.url %>" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-gray-600 flex-shrink-0 mt-0.5">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-          </svg>
-        </a>
-      </div>
-    </div>
-  <% end %>
-
-  <% if @articles.empty? %>
-    <div class="text-center py-16 text-gray-500">
-      <p class="text-lg">No articles yet.</p>
-      <% unless Rails.env.production? %>
-        <p class="text-sm mt-1">Run <code class="bg-gray-100 px-1 rounded">rake fetch</code> and <code class="bg-gray-100 px-1 rounded">rake ai_summarize</code> to populate.</p>
-      <% end %>
-    </div>
-  <% end %>
-</div>
-
-<% if @pagy.pages > 1 %>
-  <div class="mt-8 flex justify-center gap-2 text-sm">
-    <%== pagy_nav(@pagy) %>
+      </details>
+    <% end %>
   </div>
 <% end %>

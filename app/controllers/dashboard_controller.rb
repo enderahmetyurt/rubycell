@@ -1,8 +1,8 @@
 class DashboardController < ApplicationController
   def index
-    articles = Article.relevant.order(score: :desc, published_at: :desc)
+    articles = Article.relevant.order(published_at: :desc, score: :desc)
     articles = filter_by_language(articles)
-    @pagy, @articles = pagy(articles, limit: 20)
+    @articles_by_week = articles.group_by { |a| a.published_at.to_date.beginning_of_week }
   end
 
   private
