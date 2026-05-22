@@ -3,7 +3,7 @@ namespace :articles do
   task ai_summarize: :environment do
     require "net/http"
     require "json"
-    api_key = ENV["ANTHROPIC_API_KEY"]
+    api_key = Rails.application.credentials.anthropic_api_key || ENV["ANTHROPIC_API_KEY"]
     unless api_key
       puts "ANTHROPIC_API_KEY not set, skipping"
       next
