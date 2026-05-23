@@ -104,7 +104,7 @@ If you self-host and set your own `ANTHROPIC_API_KEY`, all users on your instanc
 
 ## Payments (Lemon Squeezy)
 
-1. Create a product in Lemon Squeezy for $5/year
+1. Create a product in Lemon Squeezy for $1/year
 2. Note your **Variant ID**
 3. Set `LEMONSQUEEZY_VARIANT_ID` env var
 4. Configure a webhook pointing to `https://yourdomain.com/webhooks/lemonsqueezy`
