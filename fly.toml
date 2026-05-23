@@ -1,0 +1,48 @@
+app = "rubycell"
+primary_region = "ams"
+console_command = "/rails/bin/rails console"
+
+[build]
+
+[env]
+  RAILS_ENV = "production"
+  RAILS_LOG_TO_STDOUT = "1"
+  RAILS_SERVE_STATIC_FILES = "1"
+  SOLID_QUEUE_IN_PUMA = "1"
+
+[[mounts]]
+  source = "rubycell_storage"
+  destination = "/rails/storage"
+  initial_size = "1gb"
+  auto_extend_size_threshold = 80
+  auto_extend_size_increment = "1GB"
+  auto_extend_size_limit = "10GB"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "suspend"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[http_service.checks]]
+    interval = "10s"
+    timeout = "2s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/up"
+    protocol = "http"
+    tls_skip_verify = false
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
+
+[[statics]]
+  guest_path = "/rails/public"
+  url_prefix = "/"
+
+[processes]
+  app = "./bin/rails server -b 0.0.0.0 -p 3000"
