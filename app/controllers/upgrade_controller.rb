@@ -1,6 +1,5 @@
 class UpgradeController < ApplicationController
   def show
-    variant_id = ENV["LEMONSQUEEZY_VARIANT_ID"]
-    @checkout_url = "https://lemonsqueezy.com/checkout/#{variant_id}" if variant_id.present?
+    @checkout_url = Rails.application.credentials.dig(:ls, :checkout_url)
   end
 end

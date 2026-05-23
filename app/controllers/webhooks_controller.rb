@@ -29,7 +29,7 @@ class WebhooksController < ApplicationController
   private
 
   def valid_signature?(payload, signature)
-    secret = ENV["LEMONSQUEEZY_WEBHOOK_SECRET"]
+    secret = Rails.application.credentials.dig(:ls, :webhook_secret)
     return true if secret.blank?
 
     expected = OpenSSL::HMAC.hexdigest("SHA256", secret, payload)
