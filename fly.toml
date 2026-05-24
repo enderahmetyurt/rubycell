@@ -36,7 +36,7 @@ console_command = "/rails/bin/rails console"
     tls_skip_verify = false
 
 [[vm]]
-  memory = "512mb"
+  memory = "1024mb"
   cpu_kind = "shared"
   cpus = 1
 
