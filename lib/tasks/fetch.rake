@@ -11,10 +11,8 @@ FETCH_TIMEOUT = 15
 MAX_REDIRECTS = 5
 THREAD_COUNT  = 4
 USER_AGENT    = "RubyCell/1.0"
-MAX_AGE_DAYS  = 30
-
 namespace :articles do
-  desc "Fetch articles from OPML feeds, save new ones, drop articles older than #{MAX_AGE_DAYS} days"
+  desc "Fetch articles from OPML feeds, save new ones"
   task fetch: :environment do
     opml_path = Rails.root.join("feeds.opml")
 
@@ -26,9 +24,6 @@ namespace :articles do
     feeds = rc_parse_opml(opml_path)
     puts "Found #{feeds.size} feeds"
 
-    Article.where("published_at < ?", MAX_AGE_DAYS.days.ago).delete_all
-
-    cutoff = MAX_AGE_DAYS.days.ago
     etag_path = Rails.root.join("tmp/feed_etags.json")
     etag_cache = File.exist?(etag_path) ? JSON.parse(File.read(etag_path)) : {}
 
@@ -71,7 +66,7 @@ namespace :articles do
               }.compact
             end
 
-            items = rc_parse_feed(response.body, name, url, cutoff: cutoff)
+            items = rc_parse_feed(response.body, name, url)
             thread_items.concat(items)
             mutex.synchronize do
               success_count += 1
@@ -171,7 +166,7 @@ def rc_feed_site_url(feed)
     .first || ""
 end
 
-def rc_parse_feed(xml, source_name, feed_url, cutoff:)
+def rc_parse_feed(xml, source_name, feed_url)
   feed = RSS::Parser.parse(xml, false)
   return [] unless feed
 
@@ -210,7 +205,6 @@ def rc_parse_feed(xml, source_name, feed_url, cutoff:)
 
     next unless pub_date
     pub_date = pub_date.is_a?(Time) ? pub_date : Time.parse(pub_date.to_s) rescue next
-    next if pub_date < cutoff
 
     items << {
       title:        title,
