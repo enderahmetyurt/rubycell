@@ -6,7 +6,20 @@
   <%= form_with model: @user, url: settings_path, method: :patch, class: "space-y-6 bg-white border border-gray-200 rounded-xl p-6" do |f| %>
     <div>
       <h2 class="text-sm font-semibold text-gray-900 mb-1">Account</h2>
-      <p class="text-sm text-gray-600"><%= @user.email_address %></p>
+      <div class="flex items-center gap-2">
+        <p class="text-sm text-gray-600"><%= @user.email_address %></p>
+        <% if @user.confirmed? %>
+          <span title="Email verified">✅</span>
+        <% end %>
+      </div>
+      <% unless @user.confirmed? %>
+        <div class="mt-2 flex items-center justify-between gap-3 bg-yellow-50 border border-yellow-300 rounded-md px-3 py-2">
+          <span class="text-yellow-800 text-xs font-medium">Email not verified</span>
+          <%= link_to "Verify email", resend_confirmation_settings_path,
+              data: { turbo_method: :post },
+              class: "text-xs bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold px-3 py-1 rounded cursor-pointer transition-colors" %>
+        </div>
+      <% end %>
       <p class="text-xs text-gray-500 mt-1">
         Plan: <span class="font-medium"><%= @user.paid_active? ? "Paid (expires #{@user.plan_expires_at&.strftime("%b %d, %Y")})" : "Free" %></span>
       </p>

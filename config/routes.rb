@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   # Main pages
   root "home#index"
   get "dashboard", to: "dashboard#index"
-  resource :settings, only: [ :show, :update ]
+  resource :settings, only: [ :show, :update ] do
+    post :resend_confirmation, on: :collection
+  end
   get "upgrade", to: "upgrade#show"
 
   # Webhooks
