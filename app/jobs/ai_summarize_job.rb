@@ -3,8 +3,7 @@ class AiSummarizeJob < ApplicationJob
 
   def perform
     Rails.application.load_tasks
-    Rake::Task["ai_summarize"].reenable
-    Rake::Task["ai_summarize"].invoke
-    SendDigestJob.perform_later
+    Rake::Task["articles:ai_summarize"].reenable
+    Rake::Task["articles:ai_summarize"].invoke
   end
 end
