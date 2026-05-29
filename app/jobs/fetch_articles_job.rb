@@ -3,8 +3,8 @@ class FetchArticlesJob < ApplicationJob
 
   def perform
     Rails.application.load_tasks
-    Rake::Task["fetch"].reenable
-    Rake::Task["fetch"].invoke
+    Rake::Task["articles:fetch"].reenable
+    Rake::Task["articles:fetch"].invoke
     AiSummarizeJob.perform_later
   end
 end
