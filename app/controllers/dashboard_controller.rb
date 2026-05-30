@@ -1,6 +1,7 @@
 class DashboardController < ApplicationController
   def index
-    articles = Article.relevant.order(published_at: :desc, score: :desc)
+    articles = params[:show_all] ? Article.where(ai_filtered: true) : Article.relevant
+    articles = articles.order(published_at: :desc, score: :desc)
     articles = filter_by_language(articles)
     @articles_by_week = articles.group_by { |a| a.published_at.to_date.beginning_of_week }
   end

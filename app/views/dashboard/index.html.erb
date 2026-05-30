@@ -2,8 +2,13 @@
 
 <div class="flex items-center justify-between mb-6">
   <h1 class="text-2xl font-bold text-gray-900">Latest Ruby news</h1>
-  <div class="text-sm text-gray-500">
+  <div class="flex items-center gap-4 text-sm text-gray-500">
     <%= Current.user.language.upcase %> &middot; <%= Current.user.frequency.capitalize %>
+    <% if params[:show_all] %>
+      <%= link_to "Relevant only", dashboard_path, class: "text-ruby-600 hover:underline" %>
+    <% else %>
+      <%= link_to "Show all", dashboard_path(show_all: true), class: "text-gray-400 hover:text-gray-600 hover:underline" %>
+    <% end %>
   </div>
 </div>
 
